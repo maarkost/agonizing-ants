@@ -30,7 +30,7 @@
     user-select: none;
   }
 
-  #screen-select, #screen-game, #screen-finish {
+  #screen-select, #screen-track, #screen-game, #screen-finish {
     position: fixed;
     inset: 0;
     display: none;
@@ -65,11 +65,13 @@
 
   .car-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     gap: 16px;
-    max-width: 700px;
+    max-width: 900px;
     width: 90%;
     margin-bottom: 24px;
+    max-height: 400px;
+    overflow-y: auto;
   }
 
   .car-card {
@@ -122,6 +124,110 @@
 
   .car-card.selected .badge-selected { display: block; }
 
+  /* ── TRACK SELECT SCREEN ── */
+  #screen-track {
+    background: linear-gradient(160deg, #1a1a3a 0%, #2d1b5a 50%, #1a1a3a 100%);
+    display: flex;
+  }
+
+  #screen-track h1 {
+    font-family: 'Fredoka One', cursive;
+    font-size: clamp(2rem, 5vw, 4rem);
+    color: var(--yellow);
+    text-shadow: 4px 4px 0 #000080, 6px 6px 0 #000040;
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+
+  #screen-track .subtitle {
+    font-size: 1.1rem;
+    color: #a8d8ff;
+    margin-bottom: 32px;
+    font-weight: 700;
+    letter-spacing: 1px;
+  }
+
+  .track-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+    max-width: 700px;
+    width: 90%;
+    margin-bottom: 24px;
+  }
+
+  .track-card {
+    background: rgba(255,255,255,0.07);
+    border: 3px solid rgba(255,255,255,0.15);
+    border-radius: 20px;
+    padding: 24px;
+    cursor: pointer;
+    transition: transform 0.15s, border-color 0.15s, background 0.15s;
+    text-align: center;
+    position: relative;
+    min-height: 140px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .track-card:hover, .track-card.selected {
+    transform: translateY(-4px) scale(1.03);
+    border-color: var(--yellow);
+    background: rgba(255,217,61,0.15);
+  }
+
+  .track-card .track-emoji {
+    font-size: 2.5rem;
+    margin-bottom: 12px;
+  }
+
+  .track-card .track-name {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    color: var(--white);
+    margin-bottom: 8px;
+  }
+
+  .track-card .track-desc {
+    font-size: 0.85rem;
+    color: #a8d8ff;
+    font-weight: 600;
+  }
+
+  .track-card .badge-selected {
+    position: absolute;
+    top: 8px; right: 8px;
+    background: var(--yellow);
+    color: var(--dark);
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 2px 7px;
+    border-radius: 20px;
+    display: none;
+  }
+
+  .track-card.selected .badge-selected { display: block; }
+
+  #btn-back {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.1rem;
+    padding: 10px 24px;
+    background: rgba(255,255,255,0.15);
+    color: white;
+    border: 2px solid rgba(255,255,255,0.3);
+    border-radius: 50px;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 100;
+    letter-spacing: 1px;
+  }
+
+  #btn-back:hover { background: rgba(255,255,255,0.25); }
+
   #btn-start {
     font-family: 'Fredoka One', cursive;
     font-size: 1.5rem;
@@ -138,6 +244,23 @@
 
   #btn-start:hover { transform: translateY(2px); box-shadow: 0 4px 0 #8B2A00; }
   #btn-start:active { transform: translateY(5px); box-shadow: 0 1px 0 #8B2A00; }
+
+  #btn-race {
+    font-family: 'Fredoka One', cursive;
+    font-size: 1.3rem;
+    padding: 14px 48px;
+    background: var(--green);
+    color: white;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    box-shadow: 0 6px 0 #3a8a47;
+    transition: transform 0.1s, box-shadow 0.1s;
+    letter-spacing: 1px;
+  }
+
+  #btn-race:hover { transform: translateY(2px); box-shadow: 0 4px 0 #3a8a47; }
+  #btn-race:active { transform: translateY(5px); box-shadow: 0 1px 0 #3a8a47; }
 
   /* ── GAME SCREEN ── */
   #screen-game { background: #000; padding: 0; }
@@ -265,9 +388,18 @@
 <!-- CAR SELECT SCREEN -->
 <div id="screen-select">
   <h1>🚙 SUV OFF-ROAD SMASH!</h1>
-  <p class="subtitle">⛰️ Choose your SUV and conquer the dirt!</p>
+  <p class="subtitle">⛰️ Choose your SUV!</p>
   <div class="car-grid" id="carGrid"></div>
-  <button id="btn-start">LET'S RACE! 🏁</button>
+  <button id="btn-start">NEXT: PICK TRACK 🗺️</button>
+</div>
+
+<!-- TRACK SELECT SCREEN -->
+<div id="screen-track">
+  <button id="btn-back">← BACK</button>
+  <h1>🗺️ CHOOSE YOUR TRACK!</h1>
+  <p class="subtitle">Pick a racing terrain...</p>
+  <div class="track-grid" id="trackGrid"></div>
+  <button id="btn-race">LET'S RACE! 🏁</button>
 </div>
 
 <!-- GAME SCREEN -->
@@ -301,13 +433,13 @@
   <div id="finish-stats"></div>
   <div class="finish-btns">
     <button id="btn-retry">🔄 Race Again!</button>
-    <button id="btn-menu">🚗 Change Car</button>
+    <button id="btn-menu">🚗 Change Settings</button>
   </div>
 </div>
 
 <script>
 // ─────────────────────────────────────────────
-// CAR DEFINITIONS
+// CAR DEFINITIONS (10 cars!)
 // ─────────────────────────────────────────────
 const CARS = [
   { id: 0, name: 'Defender', tag: 'Land Rover • Tough & Classic', color: '#4A7C59', color2: '#2D5A3D', roof: '#3a6047', speed: 7, handling: 0.045, tags: ['🛡️ Very Tough', '⚡ Medium Speed'] },
@@ -316,7 +448,24 @@ const CARS = [
   { id: 3, name: 'BMW X5', tag: 'BMW • Performance King', color: '#212121', color2: '#111111', roof: '#333', speed: 8.5, handling: 0.042, tags: ['🔥 Super Fast', '🎯 Precise'] },
   { id: 4, name: 'Land Cruiser', tag: 'Toyota • Legendary Off-Roader', color: '#8B7355', color2: '#6B5845', roof: '#7A6550', speed: 7.2, handling: 0.048, tags: ['🏔️ Off-Road King', '💪 Powerful'] },
   { id: 5, name: 'X-Trail', tag: 'Nissan • Adventure Ready', color: '#C41E3A', color2: '#8B1A2D', roof: '#A0192F', speed: 7.8, handling: 0.043, tags: ['🌲 Adventure', '⚡ Agile'] },
+  { id: 6, name: 'Jeep Wrangler', tag: 'Jeep • Extreme 4x4', color: '#228B22', color2: '#155D15', roof: '#1A4D1A', speed: 6.8, handling: 0.052, tags: ['🪨 Extreme', '🏔️ Beast Mode'] },
+  { id: 7, name: 'Range Rover', tag: 'Luxury + Power', color: '#2F4F4F', color2: '#1C3333', roof: '#2E4A4A', speed: 7.9, handling: 0.041, tags: ['👑 Premium', '💎 Rugged'] },
+  { id: 8, name: 'Hyundai Santa Fe', tag: 'Hyundai • Value Champion', color: '#DC143C', color2: '#A00D2C', roof: '#B8102B', speed: 7.4, handling: 0.046, tags: ['💰 Affordable', '⭐ Balanced'] },
+  { id: 9, name: 'Subaru Outback', tag: 'Subaru • All-Terrain Master', color: '#1E3A5F', color2: '#142847', roof: '#1A3050', speed: 7.6, handling: 0.047, tags: ['🛣️ All-Terrain', '📦 Steady'] },
 ];
+
+// ─────────────────────────────────────────────
+// TRACK DEFINITIONS
+// ─────────────────────────────────────────────
+const TRACKS = [
+  { id: 'offroad', name: 'Off-Road', emoji: '⛰️', desc: 'Bumpy dirt & mud', color: '#D4A060', bgColor: '#7A9A50', bumpy: true },
+  { id: 'road', name: 'Road', emoji: '🛣️', desc: 'Fast smooth asphalt', color: '#3a3a3a', bgColor: '#7a7a7a', bumpy: false },
+  { id: 'desert', name: 'Desert', emoji: '🏜️', desc: 'Hot sandy terrain', color: '#D4B896', bgColor: '#DEB887', bumpy: true },
+  { id: 'mixed', name: 'Mixed', emoji: '🌍', desc: 'Road + Off-road combo', color: '#999999', bgColor: '#999999', bumpy: true },
+];
+
+let selectedCarIdx = 0;
+let selectedTrackId = 'offroad';
 
 // ─────────────────────────────────────────────
 // DRAW PREVIEW SUV on small canvas
@@ -438,7 +587,6 @@ function drawWheel(ctx, wx, wy, damage) {
 // BUILD CAR SELECT
 // ─────────────────────────────────────────────
 const carGrid = document.getElementById('carGrid');
-let selectedCarIdx = 0;
 
 CARS.forEach((car, i) => {
   const card = document.createElement('div');
@@ -461,7 +609,42 @@ CARS.forEach((car, i) => {
   setTimeout(() => drawPreviewSUV(document.getElementById(`prev-${i}`), car), 10);
 });
 
-document.getElementById('btn-start').addEventListener('click', startGame);
+// ─────────────────────────────────────────────
+// BUILD TRACK SELECT
+// ─────────────────────────────────────────────
+const trackGrid = document.getElementById('trackGrid');
+
+TRACKS.forEach((track, i) => {
+  const card = document.createElement('div');
+  card.className = 'track-card' + (i === 0 ? ' selected' : '');
+  card.innerHTML = `
+    <span class="badge-selected">✓ CHOSEN!</span>
+    <div class="track-emoji">${track.emoji}</div>
+    <div class="track-name">${track.name}</div>
+    <div class="track-desc">${track.desc}</div>
+  `;
+  card.addEventListener('click', () => {
+    document.querySelectorAll('.track-card').forEach(c => c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedTrackId = track.id;
+  });
+  trackGrid.appendChild(card);
+});
+
+// ─────────────────────────────────────────────
+// SCREEN NAVIGATION
+// ─────────────────────────────────────────────
+document.getElementById('btn-start').addEventListener('click', () => {
+  document.getElementById('screen-select').style.display = 'none';
+  document.getElementById('screen-track').style.display = 'flex';
+});
+
+document.getElementById('btn-back').addEventListener('click', () => {
+  document.getElementById('screen-track').style.display = 'none';
+  document.getElementById('screen-select').style.display = 'flex';
+});
+
+document.getElementById('btn-race').addEventListener('click', startGame);
 document.getElementById('btn-retry').addEventListener('click', startGame);
 document.getElementById('btn-menu').addEventListener('click', () => {
   document.getElementById('screen-finish').style.display = 'none';
@@ -512,17 +695,19 @@ function isBrake() { return keys['ArrowDown'] || keys['s'] || keys['S'] || touch
 const TRACK_WIDTH = 220;
 const SEGMENT_LEN = 80;
 
-function generateTrack(numSegments) {
+function generateTrack(numSegments, trackType) {
   const points = [];
   let x = 0, y = 0, angle = 0;
+  
+  const curveFactor = trackType === 'road' ? 0.2 : (trackType === 'desert' ? 0.4 : 0.5);
+  
   for (let i = 0; i < numSegments; i++) {
     points.push({ x, y, angle });
-    const curve = (Math.random() - 0.5) * 0.5;
+    const curve = (Math.random() - 0.5) * curveFactor;
     angle += curve;
     x += Math.cos(angle) * SEGMENT_LEN;
     y += Math.sin(angle) * SEGMENT_LEN;
   }
-  // close loop back near start
   return points;
 }
 
@@ -532,17 +717,27 @@ function generateTrack(numSegments) {
 let bumps = [];
 let particles = [];
 
-function spawnBumps(track) {
+function spawnBumps(track, trackType) {
   bumps = [];
+  const bumpDensity = trackType === 'road' ? 0.5 : (trackType === 'desert' ? 2.5 : 2);
+  
   for (let i = 5; i < track.length - 5; i += 3) {
+    if (Math.random() > bumpDensity / 10) continue;
+    
     const seg = track[i];
     const offset = (Math.random() - 0.5) * TRACK_WIDTH * 0.6;
     const perp = seg.angle + Math.PI / 2;
+    
+    let bumpType = 'rock';
+    if (trackType === 'road') bumpType = Math.random() < 0.7 ? 'pothole' : 'rock';
+    if (trackType === 'desert') bumpType = Math.random() < 0.6 ? 'sand' : 'rock';
+    if (trackType === 'mud') bumpType = 'mud';
+    
     bumps.push({
       x: seg.x + Math.cos(perp) * offset,
       y: seg.y + Math.sin(perp) * offset,
       r: 10 + Math.random() * 14,
-      type: Math.random() < 0.5 ? 'rock' : 'mud',
+      type: bumpType,
     });
   }
 }
@@ -638,6 +833,7 @@ let animId = null;
 
 function startGame() {
   document.getElementById('screen-select').style.display = 'none';
+  document.getElementById('screen-track').style.display = 'none';
   document.getElementById('screen-finish').style.display = 'none';
   document.getElementById('screen-game').style.display = 'flex';
 
@@ -650,19 +846,20 @@ function startGame() {
 
   const TOTAL_SEGS = 120;
   const LAPS = 3;
-  const track = generateTrack(TOTAL_SEGS);
-  spawnBumps(track);
+  const track = generateTrack(TOTAL_SEGS, selectedTrackId);
+  spawnBumps(track, selectedTrackId);
 
   const pCar = CARS[selectedCarIdx];
   const startSeg = track[0];
 
   // AI opponents (different cars)
-  const aiIndices = [0, 1, 2, 3].filter(i => i !== selectedCarIdx).slice(0, 3);
+  const aiIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9].filter(i => i !== selectedCarIdx).slice(0, 3);
   const aiCars = aiIndices.map((carIdx, j) => createAI(carIdx, track, j * 4 + 2));
 
   gameState = {
     track,
     bumps,
+    trackType: selectedTrackId,
     player: {
       car: pCar,
       x: startSeg.x + 30,
@@ -739,10 +936,10 @@ function update() {
   for (const bump of gameState.bumps) {
     const d = Math.hypot(bump.x - player.x, bump.y - player.y);
     if (d < bump.r + 22 && player.speed > 0.5) {
-      const dmg = (player.speed / player.car.speed) * (bump.type === 'rock' ? 12 : 6);
+      const dmg = (player.speed / player.car.speed) * (bump.type === 'rock' ? 12 : (bump.type === 'pothole' ? 8 : 6));
       player.damage = Math.min(100, player.damage + dmg);
       player.speed *= 0.5;
-      const bumpColor = bump.type === 'rock' ? '#aaa' : '#8B5E3C';
+      const bumpColor = bump.type === 'rock' ? '#aaa' : (bump.type === 'sand' ? '#F4A460' : '#8B5E3C');
       addParticles(player.x, player.y, bumpColor, 8);
       if (bump.type === 'rock') addParticles(player.x, player.y, '#FF6B35', 4);
     }
@@ -781,15 +978,35 @@ function update() {
 // ─────────────────────────────────────────────
 function render() {
   if (!gameState) return;
-  const { player, aiCars, track } = gameState;
+  const { player, aiCars, track, trackType } = gameState;
 
   const camX = player.x;
   const camY = player.y;
 
+  // Background based on track type
+  let skyColor1, skyColor2, bgColor;
+  if (trackType === 'road') {
+    skyColor1 = '#87CEEB';
+    skyColor2 = '#A8D8EA';
+    bgColor = '#7a7a7a';
+  } else if (trackType === 'desert') {
+    skyColor1 = '#FFB84D';
+    skyColor2 = '#FFD699';
+    bgColor = '#DEB887';
+  } else if (trackType === 'mixed') {
+    skyColor1 = '#5BA3D9';
+    skyColor2 = '#7a9a5a';
+    bgColor = '#8a8a6a';
+  } else {
+    skyColor1 = '#5BA3D9';
+    skyColor2 = '#A8D8EA';
+    bgColor = '#7A9A50';
+  }
+
   // Sky gradient
   const sky = ctx.createLinearGradient(0, 0, 0, H * 0.55);
-  sky.addColorStop(0, '#5BA3D9');
-  sky.addColorStop(1, '#A8D8EA');
+  sky.addColorStop(0, skyColor1);
+  sky.addColorStop(1, skyColor2);
   ctx.fillStyle = sky;
   ctx.fillRect(0, 0, W, H);
 
@@ -806,7 +1023,11 @@ function render() {
   }
 
   // Mountains bg
-  ctx.fillStyle = '#6B9E5E';
+  let mtColor = '#6B9E5E';
+  if (trackType === 'road') mtColor = '#6a6a6a';
+  if (trackType === 'desert') mtColor = '#D2B48C';
+  
+  ctx.fillStyle = mtColor;
   for (let m = 0; m < 5; m++) {
     const mx = ((m * 280 - camX * 0.15) % (W + 300) + W + 300) % (W + 300) - 50;
     ctx.beginPath();
@@ -822,14 +1043,14 @@ function render() {
     ctx.lineTo(mx + 150, H * 0.32);
     ctx.closePath();
     ctx.fill();
-    ctx.fillStyle = '#6B9E5E';
+    ctx.fillStyle = mtColor;
   }
 
   ctx.save();
   ctx.translate(W / 2 - camX, H / 2 - camY);
 
   // Ground
-  ctx.fillStyle = '#7A9A50';
+  ctx.fillStyle = bgColor;
   ctx.fillRect(camX - W, camY - H, W * 3, H * 3);
 
   // Ground texture dots
@@ -841,11 +1062,12 @@ function render() {
   }
 
   // Draw track
-  drawTrack(track, camX, camY);
+  drawTrack(track, camX, camY, trackType);
 
   // Draw bumps
   for (const bump of gameState.bumps) {
     if (Math.abs(bump.x - camX) > W && Math.abs(bump.y - camY) > H) continue;
+    
     if (bump.type === 'rock') {
       ctx.fillStyle = '#8A8A8A';
       ctx.beginPath();
@@ -855,6 +1077,19 @@ function render() {
       ctx.beginPath();
       ctx.arc(bump.x - 3, bump.y - 3, bump.r * 0.5, 0, Math.PI * 2);
       ctx.fill();
+    } else if (bump.type === 'sand') {
+      ctx.fillStyle = '#D4A574';
+      ctx.beginPath();
+      ctx.ellipse(bump.x, bump.y, bump.r * 1.2, bump.r * 0.9, 0.2, 0, Math.PI * 2);
+      ctx.fill();
+    } else if (bump.type === 'pothole') {
+      ctx.fillStyle = '#2a2a2a';
+      ctx.beginPath();
+      ctx.arc(bump.x, bump.y, bump.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.strokeStyle = '#555';
+      ctx.lineWidth = 2;
+      ctx.stroke();
     } else {
       ctx.fillStyle = '#5C3A1E';
       ctx.beginPath();
@@ -872,8 +1107,6 @@ function render() {
   drawSUV(ctx, player.x, player.y, player.car, player.angle - Math.PI / 2, player.damage, 1, true);
 
   // Particles
-  drawParticles(camX - W / 2 + camX, camY - H / 2 + camY);
-  // (particles use absolute coords)
   for (const p of particles) {
     ctx.save();
     ctx.globalAlpha = p.life;
@@ -890,28 +1123,41 @@ function render() {
   drawMinimap(track, player, aiCars, camX, camY);
 }
 
-function drawTrack(track, camX, camY) {
-  // Dirt base (wide)
-  ctx.beginPath();
-  for (let i = 0; i < track.length; i++) {
-    const seg = track[i];
-    const nx = i === 0 ? ctx.moveTo(seg.x, seg.y) : ctx.lineTo(seg.x, seg.y);
+function drawTrack(track, camX, camY, trackType) {
+  let trackColor, trackColor2;
+  
+  if (trackType === 'road') {
+    trackColor = '#404040';
+    trackColor2 = '#505050';
+  } else if (trackType === 'desert') {
+    trackColor = '#D4B896';
+    trackColor2 = '#E6CDA8';
+  } else {
+    trackColor = '#C4894F';
+    trackColor2 = '#D4A060';
   }
-  ctx.lineTo(track[0].x, track[0].y);
-  ctx.strokeStyle = '#C4894F';
-  ctx.lineWidth = TRACK_WIDTH + 20;
-  ctx.lineCap = 'round';
-  ctx.lineJoin = 'round';
-  ctx.stroke();
-
-  // Main dirt
+  
+  // Dirt base (wide)
   ctx.beginPath();
   for (let i = 0; i < track.length; i++) {
     const seg = track[i];
     i === 0 ? ctx.moveTo(seg.x, seg.y) : ctx.lineTo(seg.x, seg.y);
   }
   ctx.lineTo(track[0].x, track[0].y);
-  ctx.strokeStyle = '#D4A060';
+  ctx.strokeStyle = trackColor;
+  ctx.lineWidth = TRACK_WIDTH + 20;
+  ctx.lineCap = 'round';
+  ctx.lineJoin = 'round';
+  ctx.stroke();
+
+  // Main track
+  ctx.beginPath();
+  for (let i = 0; i < track.length; i++) {
+    const seg = track[i];
+    i === 0 ? ctx.moveTo(seg.x, seg.y) : ctx.lineTo(seg.x, seg.y);
+  }
+  ctx.lineTo(track[0].x, track[0].y);
+  ctx.strokeStyle = trackColor2;
   ctx.lineWidth = TRACK_WIDTH;
   ctx.stroke();
 
@@ -998,48 +1244,21 @@ function drawMinimap(track, player, aiCars, camX, camY) {
 }
 
 function showFinish() {
-  cancelAnimationFrame(animId);
-  document.getElementById('screen-game').style.display = 'none';
-  document.getElementById('touch-controls').style.display = 'none';
+  const finishScreen = document.getElementById('screen-finish');
+  const placeNames = ['🥇 1st PLACE!', '🥈 2nd PLACE!', '🥉 3rd PLACE!', '4th PLACE'];
+  const { player, endTime, startTime, finishPlace } = gameState;
+  
+  document.getElementById('finish-title').textContent = placeNames[finishPlace - 1] || '4th PLACE';
+  document.getElementById('finish-title').style.color = finishPlace === 1 ? '#FFD93D' : (finishPlace === 2 ? '#C0C0C0' : '#CD7F32');
+  
+  const raceTime = Math.round((endTime - startTime) / 1000);
+  document.getElementById('finish-subtitle').textContent = `Great job with your ${CARS[selectedCarIdx].name}!`;
+  document.getElementById('finish-stats').innerHTML = `Race Time: <strong>${Math.floor(raceTime / 60)}:${String(raceTime % 60).padStart(2, '0')}</strong><br>Damage: <strong>${Math.round(player.damage)}%</strong><br>Track: <strong>${TRACKS.find(t => t.id === selectedTrackId).name}</strong>`;
 
-  const { player, aiCars, startTime, endTime, finishPlace, laps } = gameState;
-  const elapsed = Math.floor((endTime - startTime) / 1000);
-  const timeStr = `${Math.floor(elapsed / 60)}:${String(elapsed % 60).padStart(2, '0')}`;
-
-  const placeEmoji = ['🥇', '🥈', '🥉', '🏅'][finishPlace - 1] || '🏅';
-  const placeName = ['1st', '2nd', '3rd', '4th'][finishPlace - 1] || `${finishPlace}th`;
-
-  const title = document.getElementById('finish-title');
-  const sub = document.getElementById('finish-subtitle');
-  const stats = document.getElementById('finish-stats');
-
-  if (finishPlace === 1) {
-    title.textContent = '🏆 YOU WIN! 🏆';
-    title.style.color = '#FFD93D';
-    sub.textContent = 'Amazing driving! You crushed the off-road!';
-  } else if (finishPlace === 2) {
-    title.textContent = '🥈 SO CLOSE!';
-    title.style.color = '#C0C0C0';
-    sub.textContent = 'Great race! Just one more push next time!';
-  } else {
-    title.textContent = `${placeEmoji} ${placeName} PLACE`;
-    title.style.color = '#CD7F32';
-    sub.textContent = 'Good effort! Keep practicing!';
-  }
-
-  stats.innerHTML = `
-    <div>🚙 Your Car: <strong>${player.car.name}</strong></div>
-    <div>🏁 Laps Completed: <strong>${laps}</strong></div>
-    <div>⏱️ Your Time: <strong>${timeStr}</strong></div>
-    <div>💔 Car Damage: <strong>${Math.round(player.damage)}%</strong></div>
-    <div>🏆 Finish Position: <strong>${placeName}</strong></div>
-  `;
-
-  document.getElementById('screen-finish').style.display = 'flex';
+  finishScreen.style.display = 'flex';
 }
 
-document.getElementById('btn-retry').addEventListener('click', startGame);
 </script>
+
 </body>
 </html>
-
